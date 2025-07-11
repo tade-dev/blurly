@@ -136,7 +136,8 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
       case 2:
         return Blurly.liquidGlass(
           child: Center(child: card), 
-          showGloss: _showGloss
+          showGloss: _showGloss,
+          interactive: _enableRipples
         );
       default:
         return card;
