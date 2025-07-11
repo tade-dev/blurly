@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 import 'package:blurly/painters/liquid_interation_painter.dart';
 import 'package:flutter/material.dart';
@@ -38,10 +37,9 @@ class _LiquidGlassBackdropState extends State<LiquidGlassBackdrop>
     with TickerProviderStateMixin {
   final List<_Ripple> _ripples = [];
 
+  // trigger ripple/interaction effect
   void _triggerRipple(Offset offset) {
     if (!widget.interactive) return;
-
-    log(offset.toString());
 
     final controller = AnimationController(
       duration: const Duration(milliseconds: 800),
@@ -51,7 +49,6 @@ class _LiquidGlassBackdropState extends State<LiquidGlassBackdrop>
     final ripple = _Ripple(center: offset, controller: controller);
     _ripples.add(ripple);
 
-    // Remove after animation completes
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         controller.dispose();
@@ -60,7 +57,6 @@ class _LiquidGlassBackdropState extends State<LiquidGlassBackdrop>
       }
     });
 
-    // Limit ripple count
     if (_ripples.length > 5) {
       _ripples.removeAt(0).controller.dispose();
     }
