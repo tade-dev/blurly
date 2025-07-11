@@ -29,6 +29,7 @@ class BlurlyHomePage extends StatefulWidget {
 class _BlurlyHomePageState extends State<BlurlyHomePage> {
   int _currentIndex = 0;
   bool _showGloss = true;
+  bool _enableRipples = true;
 
   final tabs = ['Blur', 'Glass', 'Liquid'];
 
@@ -78,7 +79,7 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
 
   Widget _buildBlurCard() {
     final card = Container(
-      width: 300,
+      width: MediaQuery.sizeOf(context).width * 0.7,
       height: 180,
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -94,17 +95,35 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14),
           ),
-          if (_currentIndex == 2)
+          if (_currentIndex == 2) ...[
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Gloss'),
-                Switch(
-                  value: _showGloss,
-                  onChanged: (val) => setState(() => _showGloss = val),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    const Text('Gloss'),
+                    Switch.adaptive(
+                      value: _showGloss,
+                      onChanged: (val) => setState(() => _showGloss = val),
+                    ),
+                  ],
+                ),
+                SizedBox(width: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    const Text('Interactive'),
+                    Switch.adaptive(
+                      value: _enableRipples,
+                      onChanged: (val) => setState(() => _enableRipples = val),
+                    ),
+                  ],
                 ),
               ],
-            )
+            ),
+          ]
         ],
       ),
     );
@@ -115,7 +134,10 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
       case 1:
         return Blurly.glass(child: card);
       case 2:
-        return Blurly.liquidGlass(child: card, showGloss: _showGloss);
+        return Blurly.liquidGlass(
+          child: Center(child: card), 
+          showGloss: _showGloss
+        );
       default:
         return card;
     }

@@ -50,6 +50,7 @@ class Blurly {
     double glossOpacity = 0.15,
     bool showGloss = true,
     bool showBorder = false,
+    bool interactive = true,
     Color? borderColor,
   }) {
     return LiquidGlassBackdrop(
@@ -60,6 +61,7 @@ class Blurly {
       showGloss: showGloss,
       showBorder: showBorder,
       borderColor: borderColor,
+      interactive: interactive,
       child: child,
     );
   }
