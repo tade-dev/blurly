@@ -115,6 +115,7 @@ class _LiquidGlassBackdropState extends State<LiquidGlassBackdrop>
                   animation: r.controller,
                   builder: (_, __) => CustomPaint(
                     painter: LiquidInteractionPainter(
+                      tint: widget.tintColor,
                       center: r.center,
                       progress: r.controller.value,
                     ),

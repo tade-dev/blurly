@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class LiquidInteractionPainter extends CustomPainter {
   final Offset center;
   final double progress;
+  final Color tint;
 
   LiquidInteractionPainter({
     required this.center,
     required this.progress,
+    this.tint = Colors.white
   });
 
   @override
@@ -15,7 +17,7 @@ class LiquidInteractionPainter extends CustomPainter {
 final paint = Paint()
   ..shader = RadialGradient(
     colors: [
-      Colors.white.withOpacity(0.3), // make it more visible
+      tint.withOpacity(0.3), // make it more visible
       Colors.transparent,
     ],
   ).createShader(Rect.fromCircle(center: center, radius: radius))

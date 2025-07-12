@@ -203,14 +203,13 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
     case 0:
       return Blurly.blur(
         blurSigma: _blurSigma,
-        tintColor: _tintColor,
+        backgroundColor: _tintColor,
         child: card,
       );
     case 1:
       return Blurly.glass(
         blurSigma: _blurSigma,
-        tintColor: _tintColor,
-        glossOpacity: _glossOpacity,
+        color: _tintColor,
         child: card,
       );
     case 2:

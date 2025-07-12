@@ -16,11 +16,11 @@ class Blurly {
     required Widget child,
     double blurSigma = 20,
     Color? backgroundColor,
-    BorderRadius? borderRadius, required Color tintColor,
+    BorderRadius? borderRadius,
   }) {
     return BlurBackdrop(
       blurSigma: blurSigma,
-      backgroundColor: tintColor,
+      backgroundColor: backgroundColor,
       borderRadius: borderRadius,
       child: child,
     );
@@ -31,12 +31,12 @@ class Blurly {
     required Widget child,
     double blurSigma = 20,
     Color color = const Color.fromARGB(80, 255, 255, 255),
-    BorderRadius? borderRadius, required Color tintColor, required double glossOpacity,
+    BorderRadius? borderRadius,
   }) {
     return GlassBackdrop(
       blurSigma: blurSigma,
-      color: tintColor,
-      borderRadius: borderRadius,
+      color: color,
+      borderRadius: borderRadius ?? BorderRadius.zero,
       child: child,
     );
   }
