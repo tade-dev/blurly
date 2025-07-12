@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blurly/blurly.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 void main() {
   runApp(const BlurlyDemoApp());
@@ -30,6 +31,9 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
   int _currentIndex = 0;
   bool _showGloss = true;
   bool _enableRipples = true;
+  double _blurSigma = 30;
+  double _glossOpacity = 0.15;
+  Color _tintColor = const Color.fromARGB(50, 255, 255, 255);
 
   final tabs = ['Blur', 'Glass', 'Liquid'];
 
@@ -62,6 +66,20 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
               child: _buildBlurCard(),
             ),
           ),
+
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              child: _buildControls(),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -74,6 +92,88 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
             .toList(),
         onDestinationSelected: (index) => setState(() => _currentIndex = index),
       ),
+    );
+  }
+
+  void _showColorPicker() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Pick Tint Color'),
+        content: SingleChildScrollView(
+          child: ColorPicker(
+            pickerColor: _tintColor,
+            onColorChanged: (color) {
+              setState(() => _tintColor = color);
+            },
+            enableAlpha: true,
+            displayThumbColor: true,
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Done'),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildControls() {
+    return Column(
+      children: [
+        // Tint Color
+        ListTile(
+          title: const Text("Tint Color"),
+          trailing: Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: _tintColor,
+              border: Border.all(color: Colors.white),
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+          onTap: _showColorPicker,
+        ),
+        // Blur Sigma
+        ListTile(
+          title: const Text('Blur Sigma'),
+          subtitle: Slider(
+            value: _blurSigma,
+            min: 0,
+            max: 100,
+            divisions: 50,
+            label: _blurSigma.toStringAsFixed(1),
+            onChanged: (val) => setState(() => _blurSigma = val),
+          ),
+        ),
+        if ( _currentIndex == 2)
+          ListTile(
+            title: const Text('Gloss Opacity'),
+            subtitle: Slider(
+              value: _glossOpacity,
+              min: 0,
+              max: 1,
+              divisions: 100,
+              label: _glossOpacity.toStringAsFixed(2),
+              onChanged: (val) => setState(() => _glossOpacity = val),
+            ),
+          ),
+        if (_currentIndex == 2)
+          SwitchListTile(
+            title: const Text("Interactive"),
+            value: _enableRipples,
+            onChanged: (val) => setState(() => _enableRipples = val),
+          ),
+        if (_currentIndex == 2)
+          SwitchListTile(
+            title: const Text("Gloss"),
+            value: _showGloss,
+            onChanged: (val) => setState(() => _showGloss = val),
+          ),
+      ],
     );
   }
 
@@ -95,52 +195,35 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14),
           ),
-          if (_currentIndex == 2) ...[
-            Row(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    const Text('Gloss'),
-                    Switch.adaptive(
-                      value: _showGloss,
-                      onChanged: (val) => setState(() => _showGloss = val),
-                    ),
-                  ],
-                ),
-                SizedBox(width: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    const Text('Interactive'),
-                    Switch.adaptive(
-                      value: _enableRipples,
-                      onChanged: (val) => setState(() => _enableRipples = val),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ]
         ],
       ),
     );
 
-    switch (_currentIndex) {
-      case 0:
-        return Blurly.blur(child: card);
-      case 1:
-        return Blurly.glass(child: card);
-      case 2:
-        return Blurly.liquidGlass(
-          child: Center(child: card), 
-          showGloss: _showGloss,
-          interactive: _enableRipples
-        );
-      default:
-        return card;
-    }
+  switch (_currentIndex) {
+    case 0:
+      return Blurly.blur(
+        blurSigma: _blurSigma,
+        tintColor: _tintColor,
+        child: card,
+      );
+    case 1:
+      return Blurly.glass(
+        blurSigma: _blurSigma,
+        tintColor: _tintColor,
+        glossOpacity: _glossOpacity,
+        child: card,
+      );
+    case 2:
+      return Blurly.liquidGlass(
+        blurSigma: _blurSigma,
+        tintColor: _tintColor,
+        glossOpacity: _glossOpacity,
+        showGloss: _showGloss,
+        interactive: _enableRipples,
+        child: card,
+      );
+    default:
+      return card;
+  }
   }
 }
