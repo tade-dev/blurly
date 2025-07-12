@@ -1,7 +1,7 @@
 import 'dart:ui';
-import 'package:blurly/painters/liquid_interation_painter.dart';
 import 'package:flutter/material.dart';
 import '../painters/gloss_painter.dart';
+import '../painters/liquid_interation_painter.dart';
 
 class LiquidGlassBackdrop extends StatefulWidget {
   final Widget child;
@@ -37,7 +37,6 @@ class _LiquidGlassBackdropState extends State<LiquidGlassBackdrop>
     with TickerProviderStateMixin {
   final List<_Ripple> _ripples = [];
 
-  // trigger ripple/interaction effect
   void _triggerRipple(Offset offset) {
     if (!widget.interactive) return;
 
@@ -76,56 +75,67 @@ class _LiquidGlassBackdropState extends State<LiquidGlassBackdrop>
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: widget.borderRadius,
-      child: GestureDetector(
-        onTapDown: (details) => _triggerRipple(details.localPosition),
-        onPanUpdate: (details) => _triggerRipple(details.localPosition),
-        child: Stack(
-          children: [
-            // Blur
-            BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: widget.blurSigma,
-                sigmaY: widget.blurSigma,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: widget.tintColor,
-                  borderRadius: widget.borderRadius,
-                  border: widget.showBorder
-                      ? Border.all(
-                          color: widget.borderColor ??
-                              Colors.white.withOpacity(0.2),
-                          width: 1.0,
-                        )
-                      : null,
-                ),
-              ),
-            ),
-
-            // Gloss
-            if (widget.showGloss)
-              CustomPaint(
-                painter: GlossPainter(opacity: widget.glossOpacity),
-                size: Size.infinite,
-              ),
-
-            // Liquid Ripples
-            if(widget.interactive)
-            ..._ripples.map((r) => AnimatedBuilder(
-                  animation: r.controller,
-                  builder: (_, __) => CustomPaint(
-                    painter: LiquidInteractionPainter(
-                      tint: widget.tintColor,
-                      center: r.center,
-                      progress: r.controller.value,
-                    ),
-                    size: Size.infinite,
+      child: IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: GestureDetector(
+            onTapDown: (details) => _triggerRipple(details.localPosition),
+            onPanUpdate: (details) => _triggerRipple(details.localPosition),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Blur layer
+                BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: widget.blurSigma,
+                    sigmaY: widget.blurSigma,
                   ),
-                )),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: widget.tintColor,
+                      borderRadius: widget.borderRadius,
+                      border: widget.showBorder
+                          ? Border.all(
+                              color: widget.borderColor ??
+                                  Colors.white.withOpacity(0.2),
+                              width: 1.0,
+                            )
+                          : null,
+                    ),
+                  ),
+                ),
 
-            // Content
-            widget.child,
-          ],
+                // Gloss layer
+                if (widget.showGloss)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: CustomPaint(
+                        painter: GlossPainter(),
+                      ),
+                    ),
+                  ),
+
+                // Ripple Interactions
+                if (widget.interactive)
+                  ..._ripples.map((r) => AnimatedBuilder(
+                        animation: r.controller,
+                        builder: (_, __) => Positioned.fill(
+                          child: IgnorePointer(
+                            child: CustomPaint(
+                              painter: LiquidInteractionPainter(
+                                tint: widget.tintColor,
+                                center: r.center,
+                                progress: r.controller.value,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
+
+                // Foreground content
+                widget.child,
+              ],
+            ),
+          ),
         ),
       ),
     );

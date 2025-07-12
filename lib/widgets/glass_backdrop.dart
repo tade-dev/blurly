@@ -28,36 +28,46 @@ class GlassBackdrop extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: borderRadius,
-      child: Stack(
-        children: [
-          // Blur + background color
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
-            child: Container(
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: borderRadius,
-                border: showBorder
-                    ? Border.all(
-                        color: borderColor ?? Colors.white.withOpacity(0.2),
-                        width: 1,
-                      )
-                    : null,
+      child: IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              // Blur + Tint
+              BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: blurSigma,
+                  sigmaY: blurSigma,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: borderRadius,
+                    border: showBorder
+                        ? Border.all(
+                            color:
+                                borderColor ?? Colors.white.withOpacity(0.2),
+                            width: 1,
+                          )
+                        : null,
+                  ),
+                ),
               ),
-            ),
+
+              // Gloss
+              if (showGloss)
+                Positioned.fill(
+                  child: CustomPaint(
+                    painter: GlossPainter(opacity: glossOpacity),
+                  ),
+                ),
+
+              // Foreground content
+              child,
+            ],
           ),
-
-          // Optional gloss layer
-          if (showGloss)
-            Positioned.fill(
-              child: CustomPaint(
-                painter: GlossPainter(opacity: glossOpacity),
-              ),
-            ),
-
-          // Foreground content
-          child,
-        ],
+        ),
       ),
     );
   }
