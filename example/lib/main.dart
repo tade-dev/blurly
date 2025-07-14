@@ -37,63 +37,74 @@ class _BlurlyHomePageState extends State<BlurlyHomePage> {
 
   final tabs = ['Blur', 'Glass', 'Liquid'];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Blurly Showcase'),
-        centerTitle: true,
-      ),
-      body: Stack(
-        children: [
-          // Background image for blur effect
-          Positioned.fill(
-            child: Image.network(
-              'https://images.unsplash.com/photo-1605460375648-278bcbd579a6?auto=format&fit=crop&w=1000&q=80',
-              fit: BoxFit.cover,
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Blurly Showcase'),
+      centerTitle: true,
+    ),
+    body: Stack(
+      children: [
+        // Background image for blur effect
+        Positioned.fill(
+          child: Image.network(
+            'https://images.unsplash.com/photo-1605460375648-278bcbd579a6?auto=format&fit=crop&w=1000&q=80',
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        // Dark overlay
+        Positioned.fill(
+          child: Container(color: Colors.black.withOpacity(0.4)),
+        ),
+
+        // Main content with blur widget and controls side by side
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Responsive: if narrow screen, stack vertically
+                final isNarrow = constraints.maxWidth < 600;
+                return isNarrow
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildBlurCard(),
+                          const SizedBox(height: 20),
+                          _buildControls(),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildBlurCard(),
+                          const SizedBox(width: 24),
+                          SizedBox(
+                            width: 250,
+                            child: _buildControls(),
+                          ),
+                        ],
+                      );
+              },
             ),
           ),
-
-          // Dark overlay
-          Positioned.fill(
-            child: Container(color: Colors.black.withOpacity(0.4)),
-          ),
-
-          // Centered blur card
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: _buildBlurCard(),
-            ),
-          ),
-
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-              ),
-              child: _buildControls(),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        destinations: tabs
-            .map((label) => NavigationDestination(
-                  icon: const Icon(Icons.blur_on),
-                  label: label,
-                ))
-            .toList(),
-        onDestinationSelected: (index) => setState(() => _currentIndex = index),
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+    bottomNavigationBar: NavigationBar(
+      selectedIndex: _currentIndex,
+      destinations: tabs
+          .map((label) => NavigationDestination(
+                icon: const Icon(Icons.blur_on),
+                label: label,
+              ))
+          .toList(),
+      onDestinationSelected: (index) => setState(() => _currentIndex = index),
+    ),
+  );
+}
 
   void _showColorPicker() {
     showDialog(
