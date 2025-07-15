@@ -29,10 +29,8 @@ class BlurlyHomePage extends StatefulWidget {
 
 class _BlurlyHomePageState extends State<BlurlyHomePage> {
   int _currentIndex = 0;
-  bool _showGloss = true;
   bool _enableRipples = true;
   double _blurSigma = 30;
-  double _glossOpacity = 0.15;
   Color _tintColor = const Color.fromARGB(50, 255, 255, 255);
 
   final tabs = ['Blur', 'Glass', 'Liquid'];
@@ -160,29 +158,11 @@ Widget build(BuildContext context) {
             onChanged: (val) => setState(() => _blurSigma = val),
           ),
         ),
-        if ( _currentIndex == 2)
-          ListTile(
-            title: const Text('Gloss Opacity'),
-            subtitle: Slider(
-              value: _glossOpacity,
-              min: 0,
-              max: 1,
-              divisions: 100,
-              label: _glossOpacity.toStringAsFixed(2),
-              onChanged: (val) => setState(() => _glossOpacity = val),
-            ),
-          ),
         if (_currentIndex == 2)
           SwitchListTile(
             title: const Text("Interactive"),
             value: _enableRipples,
             onChanged: (val) => setState(() => _enableRipples = val),
-          ),
-        if (_currentIndex == 2)
-          SwitchListTile(
-            title: const Text("Gloss"),
-            value: _showGloss,
-            onChanged: (val) => setState(() => _showGloss = val),
           ),
       ],
     );
@@ -213,7 +193,7 @@ Widget build(BuildContext context) {
     case 0:
       return Blurly.blur(
         blurSigma: _blurSigma,
-        backgroundColor: _tintColor,
+        tint: _tintColor,
         child: card,
       );
     case 1:
@@ -225,7 +205,7 @@ Widget build(BuildContext context) {
     case 2:
       return Blurly.liquidGlass(
         blurSigma: _blurSigma,
-        tintColor: _tintColor,
+        tint: _tintColor,
         interactive: _enableRipples,
         child: card,
       );

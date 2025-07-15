@@ -4,28 +4,24 @@ import 'package:flutter/material.dart';
 class BlurBackdrop extends StatelessWidget {
   final Widget child;
   final double blurSigma;
-  final Color backgroundColor;
+  final Color tint;
   final BorderRadius borderRadius;
   final bool showBorder;
   final Color? borderColor;
   final bool showShadow;
   final List<BoxShadow>? boxShadow;
-  final bool showNoise;
-  final ImageProvider<Object>? noiseImage;
   final BlendMode blendMode;
 
   const BlurBackdrop({
     super.key,
     required this.child,
     this.blurSigma = 20,
-    this.backgroundColor = const Color.fromARGB(30, 255, 255, 255),
+    this.tint = const Color.fromARGB(30, 255, 255, 255),
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
     this.showBorder = false,
     this.borderColor,
     this.showShadow = false,
     this.boxShadow,
-    this.showNoise = false,
-    this.noiseImage,
     this.blendMode = BlendMode.srcOver,
   });
 
@@ -55,7 +51,7 @@ class BlurBackdrop extends StatelessWidget {
               filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
               child: Container(
                 decoration: BoxDecoration(
-                  color: backgroundColor,
+                  color: tint,
                   borderRadius: borderRadius,
                   border: showBorder
                       ? Border.all(
@@ -70,19 +66,6 @@ class BlurBackdrop extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Optional noise overlay
-            if (showNoise && noiseImage != null)
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.03,
-                  child: Image(
-                    image: noiseImage!,
-                    fit: BoxFit.cover,
-                    repeat: ImageRepeat.repeat,
-                  ),
-                ),
-              ),
 
             // Foreground content
             child,
