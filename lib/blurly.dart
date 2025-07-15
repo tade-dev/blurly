@@ -28,11 +28,6 @@ class Blurly {
       blurSigma: blurSigma,
       tint: tint ?? const Color.fromARGB(30, 255, 255, 255),
       borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(12)),
-      showBorder: showBorder,
-      borderColor: borderColor,
-      showShadow: showShadow,
-      boxShadow: boxShadow,
-      blendMode: blendMode,
       child: child,
     );
   }
