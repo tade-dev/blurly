@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class GlassBackdrop extends StatelessWidget {
   final Widget child;
   final double blurSigma;
-  final Color color;
+  final Color tint;
   final BorderRadius borderRadius;
   final bool showGloss;
   final double glossOpacity;
@@ -20,7 +20,7 @@ class GlassBackdrop extends StatelessWidget {
     super.key,
     required this.child,
     this.blurSigma = 20,
-    this.color = const Color.fromARGB(80, 255, 255, 255),
+    this.tint = const Color.fromARGB(80, 255, 255, 255),
     this.borderRadius = const BorderRadius.all(Radius.circular(16)),
     this.showGloss = true,
     this.glossOpacity = 0.15,
@@ -65,7 +65,7 @@ class GlassBackdrop extends StatelessWidget {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: color,
+                      color: tint,
                       borderRadius: borderRadius,
                       border: showBorder
                           ? Border.all(

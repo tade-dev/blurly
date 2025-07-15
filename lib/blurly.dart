@@ -41,7 +41,7 @@ class Blurly {
   static Widget glass({
     required Widget child,
     double blurSigma = 20,
-    Color color = const Color.fromARGB(80, 255, 255, 255),
+    Color tint = const Color.fromARGB(80, 255, 255, 255),
     BorderRadius? borderRadius,
     bool showBorder = false,
     Color? borderColor,
@@ -51,7 +51,7 @@ class Blurly {
   }) {
     return GlassBackdrop(
       blurSigma: blurSigma,
-      color: color,
+      tint: tint,
       borderRadius: borderRadius ?? const BorderRadius.all(Radius.circular(12)),
       showBorder: showBorder,
       borderColor: borderColor,

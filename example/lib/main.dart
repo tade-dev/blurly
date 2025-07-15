@@ -199,7 +199,7 @@ Widget build(BuildContext context) {
     case 1:
       return Blurly.glass(
         blurSigma: _blurSigma,
-        color: _tintColor,
+        tint: _tintColor,
         child: card,
       );
     case 2:
