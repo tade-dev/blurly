@@ -52,7 +52,6 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: Blurly.liquidGlass(
-              showGloss: false,
               child: const Text('No Gloss'),
             ),
           ),

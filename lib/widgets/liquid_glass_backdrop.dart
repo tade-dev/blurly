@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../painters/gloss_painter.dart';
 import '../painters/liquid_interation_painter.dart';
 
 class LiquidGlassBackdrop extends StatefulWidget {
@@ -8,8 +7,6 @@ class LiquidGlassBackdrop extends StatefulWidget {
   final double blurSigma;
   final Color tintColor;
   final BorderRadius borderRadius;
-  final double glossOpacity;
-  final bool showGloss;
   final bool showBorder;
   final Color? borderColor;
 
@@ -22,8 +19,6 @@ class LiquidGlassBackdrop extends StatefulWidget {
     this.blurSigma = 30,
     this.tintColor = const Color.fromARGB(50, 255, 255, 255),
     this.borderRadius = const BorderRadius.all(Radius.circular(16)),
-    this.glossOpacity = 0.15,
-    this.showGloss = true,
     this.showBorder = false,
     this.borderColor,
     this.interactive = true,
@@ -103,16 +98,6 @@ class _LiquidGlassBackdropState extends State<LiquidGlassBackdrop>
                     ),
                   ),
                 ),
-
-                // Gloss layer
-                if (widget.showGloss)
-                  Positioned.fill(
-                    child: IgnorePointer(
-                      child: CustomPaint(
-                        painter: GlossPainter(),
-                      ),
-                    ),
-                  ),
 
                 // Ripple Interactions
                 if (widget.interactive)

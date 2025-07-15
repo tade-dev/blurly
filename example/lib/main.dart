@@ -190,7 +190,6 @@ Widget build(BuildContext context) {
 
   Widget _buildBlurCard() {
     final card = Container(
-      width: MediaQuery.sizeOf(context).width * 0.7,
       height: 180,
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -227,8 +226,6 @@ Widget build(BuildContext context) {
       return Blurly.liquidGlass(
         blurSigma: _blurSigma,
         tintColor: _tintColor,
-        glossOpacity: _glossOpacity,
-        showGloss: _showGloss,
         interactive: _enableRipples,
         child: card,
       );
