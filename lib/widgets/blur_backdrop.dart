@@ -43,38 +43,34 @@ class BlurBackdrop extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: borderRadius,
-        child: IntrinsicWidth(
-          child: IntrinsicHeight(
-            child: Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.center,
-              children: [
-                // Blur layer
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: tint,
-                      borderRadius: borderRadius,
-                      border: showBorder
-                          ? Border.all(
-                              color: borderColor ?? Colors.white.withOpacity(0.15),
-                              width: 1,
-                            )
-                          : null,
-                    ),
-                    foregroundDecoration: BoxDecoration(
-                      color: Colors.transparent,
-                      backgroundBlendMode: blendMode,
-                    ),
-                  ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            // Blur layer
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: tint,
+                  borderRadius: borderRadius,
+                  border: showBorder
+                      ? Border.all(
+                          color: borderColor ?? Colors.white.withOpacity(0.15),
+                          width: 1,
+                        )
+                      : null,
                 ),
-            
-                // Foreground content
-                child,
-              ],
+                foregroundDecoration: BoxDecoration(
+                  color: Colors.transparent,
+                  backgroundBlendMode: blendMode,
+                ),
+              ),
             ),
-          ),
+        
+            // Foreground content
+            child,
+          ],
         ),
       ),
     );

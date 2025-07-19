@@ -12,7 +12,7 @@ topics:
   - effects
 
 environment:
-  sdk: ^3.7.2
+  sdk: ">=3.5.3 <4.0.0"
 
 dependencies:
   flutter:

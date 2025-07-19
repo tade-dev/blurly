@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../painters/gloss_painter.dart';
 
 class GlassBackdrop extends StatelessWidget {
   final Widget child;
@@ -81,6 +82,13 @@ class GlassBackdrop extends StatelessWidget {
                     ),
                   ),
                 ),
+                // Gloss overlay
+                if (showGloss)
+                  Positioned.fill(
+                    child: CustomPaint(
+                      painter: GlossPainter(opacity: glossOpacity),
+                    ),
+                  ),
 
                 // Foreground content
                 child,
